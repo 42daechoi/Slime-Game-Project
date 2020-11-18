@@ -1,5 +1,15 @@
 # SlimeGameProject
 
+## Function
+
+- GetInput() : 키보드, 마우스 등 입력을 받는 함수
+- LookAround() : 마우스 이동 시 화면 전환 함수
+- Move() : 이동 함수
+- Run() : 달리기 함수
+- Jump() : 점프 함수
+- Attack() : 몸통 박치기 함수
+- Interaction() : 원소를 획득하고 조건에 맞춰 공격력을 증가 시키는 함수
+- Heal() : 체력을 회복 시키는 함수
 
 ## History
 ### 20.11.11
@@ -26,8 +36,12 @@
     * 수정 : 회전 애니메이션 제거 -> Unity 내부 스크립트로 회전 구현 - 20.11.16 / Line 1
 ### 20.11.18
  - Unity : 원소 강화 +2강 이상일 경우 다른 종류의 원소를 먹으면 힐 하는 함수 추가(High risk, high return)
+ - 캐릭터가 보고 있는 방향으로 AddForce하여 몸통 박치기 구현
     * 수정 : 원소 강화 +5 강화 시 다른 원소 획득이 불가능한 버그 수정 - 20.11.17 / Line 1 ~ 2
     * 수정 : 캐릭터가 먹은 원소를 저장하는 변수에 GameObject가 저장되지 않는 버그 수정 - 20.11.17 / Line 1
        - 원인 : GameObject 변수(myElement)에 GameObject(nearObj) 할당 시 값에 대한 할당이 아닌 참조이기에
               원소 획득 후 nearObj에 대한 Destroy 과정에서 myElement 참조까지 Destroy
        - 해결 : 원소 종류에 따라 Index 부여 후 할당, 비교
+    * 수정 : 캐릭터의 이동이 없는 상태로 마우스로 몸을 회전시킬 경우 마지막으로 이동 시 바라 봤던 방향으로 몸통 박치기 하는 버그 수정 - 20.11.18 / Line 2
+       - 원인 : 캐릭터가 보는 방향을 할당하는 변수인 slimeForward를 사용 했는데 LookAround() 함수가 아닌 Move() 함수 내에 있어 이동 입력이 있을 때만 방향이 할당
+       - 해결 : slimeForward 할당문을 LookAround()로 이동
