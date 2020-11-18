@@ -42,6 +42,7 @@
        - 원인 : GameObject 변수(myElement)에 GameObject(nearObj) 할당 시 값에 대한 할당이 아닌 참조이기에
               원소 획득 후 nearObj에 대한 Destroy 과정에서 myElement 참조까지 Destroy
        - 해결 : 원소 종류에 따라 Index 부여 후 할당, 비교
-    * 수정 : 캐릭터의 이동이 없는 상태로 마우스로 몸을 회전시킬 경우 마지막으로 이동 시 바라 봤던 방향으로 몸통 박치기 하는 버그 수정 - 20.11.18 / Line 2
+    * 수정 : 캐릭터의 이동이 없는 상태로 마우스로 몸을 회전시킬 경우 마지막으로 이동 시
+             바라 봤던 방향으로 몸통 박치기 하는 버그 수정 - 20.11.18 / Line 2
        - 원인 : 캐릭터가 보는 방향을 할당하는 변수인 slimeForward를 사용 했는데 LookAround() 함수가 아닌 Move() 함수 내에 있어 이동 입력이 있을 때만 방향이 할당
        - 해결 : slimeForward 할당문을 LookAround()로 이동
