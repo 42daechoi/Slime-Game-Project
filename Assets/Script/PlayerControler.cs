@@ -6,12 +6,15 @@ public class PlayerControler : MonoBehaviour
 {
     Animator anim;          //애니메이터 컴포넌트
     Rigidbody rigid;        //리지드바디 컴포넌트
-    [SerializeField]    
-    Transform cameraArm;    //메인카메라 트랜스폼
-    [SerializeField]        
-    Transform slimeBody;    //슬라임 트랜스폼 
+  
+    public Transform cameraArm;    //메인카메라 트랜스폼     
+    public Transform slimeBody;    //슬라임 트랜스폼 
+    public Transform skillPos;
+    public GameObject skillElement;
 
-    GameObject nearObj;     //가까이 있는 오브젝트를 저장할 변수   //내가 가지고 있는 원소
+    GameObject nearObj;     //가까이 있는 오브젝트를 저장할 변수
+    GameObject instantSkill;
+    
 
     public float spd=5f;    //캐릭터 걷기 이동속도
     public float jumppw=10f;//점프 파워
@@ -31,6 +34,7 @@ public class PlayerControler : MonoBehaviour
     Vector3 lookForward;    //카메라 회전 관리 
     Vector3 slimeForward;
     Vector3 slimeRight;
+    
 
     bool runflag;
     bool jumpflag;
@@ -38,8 +42,11 @@ public class PlayerControler : MonoBehaviour
     bool isJump;
     bool isDodge;
     bool isAttack;
+    bool isSkill;
     bool Eflag;
     bool attackFlag;
+    bool skillFlag;
+    
 
 
     void Awake()
@@ -57,6 +64,7 @@ public class PlayerControler : MonoBehaviour
         Run();
         Jump();
         Attack();
+        Skill();
         Interaction();
     }
     
@@ -73,6 +81,7 @@ public class PlayerControler : MonoBehaviour
         Altflag=Input.GetKey(KeyCode.LeftAlt);
         Eflag=Input.GetKeyDown(KeyCode.E);
         attackFlag=Input.GetMouseButtonDown(1);
+        skillFlag=Input.GetMouseButtonDown(0);
         //입력받는 함수
     }
 
@@ -146,6 +155,24 @@ public class PlayerControler : MonoBehaviour
     IEnumerator WaitforAttack() {
         yield return new WaitForSeconds(2.0f);  //코루틴 딜레이를 통해 플래그 수정
         isAttack=false;
+    }
+
+    void Skill()
+    {
+        if(skillFlag && !isAttack && myElement<0 && !isSkill){
+            isSkill=true;
+            StartCoroutine(CreateSkill());
+        }
+    }
+
+    IEnumerator CreateSkill()
+    {
+        instantSkill = Instantiate(skillElement, skillPos.position, skillPos.rotation);
+        Rigidbody skillRigid = instantSkill.GetComponent<Rigidbody>();
+        skillRigid.velocity = slimeForward * 20;
+        skillRigid.AddTorque(Vector3.up * 10, ForceMode.Impulse);
+        yield return new WaitForSeconds(0.7f);
+        isSkill=false;
     }
 
     void Heal(){

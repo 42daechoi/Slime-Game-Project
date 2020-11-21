@@ -9,6 +9,8 @@
 - Jump() : 점프 함수
 - Attack() : 몸통 박치기 함수
 - IEnumerator WaitforAttack() : 몸통 박치기에 딜레이를 걸어주는 코루틴 함수
+- Skill() : 스킬 사용 조건 함수
+- IEnumerator SkillCreate() : Instantiate 함수로 스킬 생성
 - Interaction() : 원소를 획득하고 조건에 맞춰 공격력을 증가 시키는 함수
 - Heal() : 체력을 회복 시키는 함수
 
@@ -54,9 +56,12 @@
        - 해결 : slimeForward 할당문을 LookAround()로 이동
       
 ### 20.11.19
- - Blender : 몸통 박치기 애니메이션 제작
  - 고민 : 캐릭터 상태에 대한 flag가 점점 늘어나 가시성이 떨어지고 관리가 어려움 -> FSM(유한 상태 기계), 푸시다운 오토마타(미적용)
  
     * 수정 : 몸통 박치기 중 몸통 박치기가 되는 버그 수정 - 20.11.19 / Line 2
        - 해결 : Coroutine Delay를 통해 몸통 박치기 후 지연 시간 추가
-    
+### 20.11.21
+ - Unity : 마우스 좌클릭 시 원소 투사체 발사 스킬 사용 구현
+ - 투사체가 바닥, 벽, 캐릭터와 충돌 시 2초 후 파괴
+ - 원소와 관련된 색상의 이펙트 사용
+ - Instatiate 함수는 if문 내부에 정의할 수 없어 Coroutine을 사용
