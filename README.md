@@ -17,7 +17,7 @@
 ## History
 ### 20.11.11
  -  Blender 프로그램으로 슬라임 몸체, 뼈, 애니메이션(걷기) 제작 
- -!! Start(), Update() 함수는 존재만으로 자원을 소모하기에 사용하지 않으면 지우게 좋다.
+ -  ""Start(), Update() 함수는 존재만으로 자원을 소모하기에 사용하지 않으면 지우게 좋다.""
 ### 20.11.12
  - 슬라임 Blender 파일 Unity에 임포트 후 걷기 W,A,S,D(방향키) 
 ### 20.11.13
@@ -46,8 +46,8 @@
     * 수정 : 원소 강화 +5 강화 시 다른 원소 획득이 불가능한 버그 수정 - 20.11.17 / Line 1 ~ 2
     
     * 수정 : 캐릭터가 먹은 원소를 저장하는 변수에 GameObject가 저장되지 않는 버그 수정 - 20.11.17 / Line 1
-       -!! 원인 : GameObject 변수(myElement)에 GameObject(nearObj) 할당 시 값에 대한 할당이 아닌 참조이기에
-                  원소 획득 후 nearObj에 대한 Destroy 과정에서 myElement 참조까지 Destroy
+       - ""원인 : GameObject 변수(myElement)에 GameObject(nearObj) 할당 시 값에 대한 할당이 아닌 참조이기에
+                  원소 획득 후 nearObj에 대한 Destroy 과정에서 myElement 참조까지 Destroy""
        - 해결 : 원소 종류에 따라 Index 부여 후 할당, 비교
        
     * 수정 : 캐릭터의 이동이 없는 상태로 마우스로 몸을 회전시킬 경우 마지막으로 이동 시 바라 봤던 방향으로
