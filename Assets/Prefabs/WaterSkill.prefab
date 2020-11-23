@@ -272,6 +272,7 @@ GameObject:
   - component: {fileID: 4769104966251675240}
   - component: {fileID: 5288513621298193620}
   - component: {fileID: 3862867870621944854}
+  - component: {fileID: 8397950778337842190}
   m_Layer: 0
   m_Name: WaterSkill
   m_TagString: Tag_Element
@@ -324,6 +325,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8397950778337842190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5288513621298193618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20e57eab400bcb54aa5570b99320b2cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EleType: 0
 --- !u!1 &5678610048627231758
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerControler : MonoBehaviour
 {
+    public static PlayerControler instance;
+
     Animator anim;          //애니메이터 컴포넌트
     Rigidbody rigid;        //리지드바디 컴포넌트
   
@@ -24,7 +26,8 @@ public class PlayerControler : MonoBehaviour
 
     public float spd=5f;    //캐릭터 걷기 이동속도
     public float jumppw=10f;//점프 파워
-    public int damage=20;
+    public int attackDamage=60;
+    public int skillDamage=20;
     public int elementCnt=0;    //엘리먼트 강화 숫자
     public int elementIndex=-2; //불:0, 얼음:1, 물:2, 돌:3, 풀:4, 빛:5의 인덱스를 가짐 -2는 초기화
     public int myElement=-1;    //내가 가진 원소의 Index, -1은 초기화
@@ -57,6 +60,7 @@ public class PlayerControler : MonoBehaviour
 
     void Awake()
     {
+        instance=this;
         rigid=GetComponent<Rigidbody>();          //리지드바디 컴포넌트 호출
         anim=slimeBody.GetComponent<Animator>();  //애니메이터 컴포넌트 호출
     }
@@ -117,17 +121,19 @@ public class PlayerControler : MonoBehaviour
         if(hAxis==0&&vAxis==0) anim.SetBool("isWalk",false);
             //이동 입력이 없을 때 
         else {
-            anim.SetBool("isWalk",true);
-            moveVec = slimeForward * vAxis + slimeRight * hAxis;    //실시간으로 변하는 슬라임의 방향을 받아와 이동
-            if(isJump) moveVec=jumpVec;                             // 점프했을 때 방향 전환 불가능
-            transform.position += moveVec * spd * Time.deltaTime;   //Time.deltaTime -> 사용자 프레임에 상관없이 동일하게 출력
-            rigid.MovePosition (transform.position);
+            if(!isAttack) {
+                anim.SetBool("isWalk",true);
+                moveVec = slimeForward * vAxis + slimeRight * hAxis;    //실시간으로 변하는 슬라임의 방향을 받아와 이동
+                if(isJump) moveVec=jumpVec;                             // 점프했을 때 방향 전환 불가능
+                transform.position += moveVec * spd * Time.deltaTime;   //Time.deltaTime -> 사용자 프레임에 상관없이 동일하게 출력
+                rigid.MovePosition (transform.position);
+            }
         }     
     }
             
     void Run() 
     {
-        if(runflag&&Input.GetKey(KeyCode.W)){  //앞으로만 달리기 가능
+        if(runflag&&Input.GetKey(KeyCode.W)&&!isAttack){  //앞으로만 달리기 가능
             anim.SetBool("isRun", true);
             spd=10f;
         }
@@ -139,7 +145,7 @@ public class PlayerControler : MonoBehaviour
 
     void Jump()
     {
-        if(jumpflag&&!isJump)
+        if(jumpflag&&!isJump&&!isAttack)
         {   
             jumpVec=moveVec;
             rigid.AddForce(Vector3.up*jumppw,ForceMode.Impulse);    //Vector3기준 up(위)방향으로 AddForce로 점프, 점프모드 Impulse로 즉발
@@ -183,13 +189,15 @@ public class PlayerControler : MonoBehaviour
             
             else if(myElement==elementIndex) {  //내가 먹은 원소가 내가 가지고 있던 원소와 같은 경우
                 if(elementCnt<5){   //원소 강화 최대치 +5
-                    damage+=10;
+                    attackDamage+=10;
+                    skillDamage+=5;
                     elementCnt++;
                 }
             }
             else {  //내가 가지고 있던 원소랑 내가 먹은 원소가 다른경우
                 if(elementCnt>=2) Heal();   //원소 강화 +2 이상일 경우에만 힐 -> 피가 없을 경우 계속 다른 종류 원소 먹는 경우 방지(어느정도 리스크 감수 해야 힐가능)
-                damage=20;
+                attackDamage=60;
+                skillDamage=20;
                 elementCnt=1;
                 myElement=elementIndex;
             }
@@ -253,6 +261,10 @@ public class PlayerControler : MonoBehaviour
         if(collision.gameObject.tag=="Floor") { //태그가 "Floor"인 오브젝트랑 충돌 시 true
             anim.SetBool("isJump",false);
             isJump = false;
+        }
+        if(collision.gameObject.tag=="Tag_Slime" && isAttack) {
+            TargetTest tt = collision.gameObject.GetComponent<TargetTest>();
+            if(isAttack) tt.health-=attackDamage;
         }
     }
 

@@ -1322,6 +1322,12 @@ MonoBehaviour:
   skillPos: {fileID: 5829761515930253827}
   skillElement: {fileID: 937991703581780863, guid: 649187db0cabecc45a4ec19cb91aabfa,
     type: 3}
+  FireSkill: {fileID: 0}
+  IceSkill: {fileID: 0}
+  GrassSkill: {fileID: 0}
+  StoneSkill: {fileID: 0}
+  LightSkill: {fileID: 0}
+  WaterSkill: {fileID: 0}
   spd: 15
   jumppw: 10
   damage: 20
