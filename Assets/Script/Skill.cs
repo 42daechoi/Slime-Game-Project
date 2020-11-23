@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Skill : MonoBehaviour
 {
-    public int damage;
+    public int EleType;
 
     void OnCollisionEnter(Collision collision)
     {

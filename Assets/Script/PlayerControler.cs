@@ -10,7 +10,13 @@ public class PlayerControler : MonoBehaviour
     public Transform cameraArm;    //메인카메라 트랜스폼     
     public Transform slimeBody;    //슬라임 트랜스폼 
     public Transform skillPos;
-    public GameObject skillElement;
+    [HideInInspector] public GameObject skillElement;
+    [HideInInspector] public GameObject FireSkill;
+    [HideInInspector] public GameObject IceSkill;
+    [HideInInspector] public GameObject GrassSkill;
+    [HideInInspector] public GameObject StoneSkill;
+    [HideInInspector] public GameObject LightSkill;
+    [HideInInspector] public GameObject WaterSkill;
 
     GameObject nearObj;     //가까이 있는 오브젝트를 저장할 변수
     GameObject instantSkill;
@@ -64,8 +70,8 @@ public class PlayerControler : MonoBehaviour
         Run();
         Jump();
         Attack();
-        Skill();
         Interaction();
+        Skill();
     }
     
     
@@ -94,7 +100,7 @@ public class PlayerControler : MonoBehaviour
         else xLimit = Mathf.Clamp(xLimit,335f,361f);            //땅을 쳐다보는 경우 카메라앵글 제한
         cameraArm.rotation = Quaternion.Euler(xLimit , camAngle.y + mouseDelta.x,camAngle.z);   //camAngle에 mouseDelta를 더함(영향)
         
-        lookForward = new Vector3(cameraArm.forward.x, 0f, cameraArm.forward.z);    //카메라 앵글에 대한 벡터
+        lookForward = new Vector3(cameraArm.forward.x, 0f, cameraArm.forward.z);                //카메라 앵글에 대한 벡터
         slimeForward = new Vector3(slimeBody.forward.x, 0f, slimeBody.forward.z).normalized;    //슬라임이 보고 있는 방향에 대한 벡터을 0~1 사이 값으로 normalized(앞뒤)
         slimeRight = new Vector3(slimeBody.right.x, 0f, slimeBody.right.z).normalized;          //좌우
         
@@ -105,14 +111,15 @@ public class PlayerControler : MonoBehaviour
         }
     }
 
+
     void Move()
     {
         if(hAxis==0&&vAxis==0) anim.SetBool("isWalk",false);
             //이동 입력이 없을 때 
         else {
             anim.SetBool("isWalk",true);
-            moveVec = slimeForward * vAxis + slimeRight * hAxis;   
-            if(isJump) moveVec=jumpVec;     // 점프했을 때 방향 전환 불가능
+            moveVec = slimeForward * vAxis + slimeRight * hAxis;    //실시간으로 변하는 슬라임의 방향을 받아와 이동
+            if(isJump) moveVec=jumpVec;                             // 점프했을 때 방향 전환 불가능
             transform.position += moveVec * spd * Time.deltaTime;   //Time.deltaTime -> 사용자 프레임에 상관없이 동일하게 출력
             rigid.MovePosition (transform.position);
         }     
@@ -157,23 +164,6 @@ public class PlayerControler : MonoBehaviour
         isAttack=false;
     }
 
-    void Skill()
-    {
-        if(skillFlag && !isAttack && myElement<0 && !isSkill){
-            isSkill=true;
-            StartCoroutine(CreateSkill());
-        }
-    }
-
-    IEnumerator CreateSkill()
-    {
-        instantSkill = Instantiate(skillElement, skillPos.position, skillPos.rotation);
-        Rigidbody skillRigid = instantSkill.GetComponent<Rigidbody>();
-        skillRigid.velocity = slimeForward * 20;
-        skillRigid.AddTorque(Vector3.up * 10, ForceMode.Impulse);
-        yield return new WaitForSeconds(0.7f);
-        isSkill=false;
-    }
 
     void Heal(){
         if(myHealth<=70) myHealth+=30;
@@ -205,7 +195,58 @@ public class PlayerControler : MonoBehaviour
             }
             Destroy(nearObj); //상호작용 시 파괴   
         }
+        checkElement();
     }
+
+    void checkElement()
+    {
+        switch (myElement)
+        {
+            case 0:
+                skillElement = FireSkill;
+                break;
+            case 1:
+                skillElement = IceSkill;
+                break;
+            case 2:
+                skillElement = GrassSkill;
+                break;
+            case 3:
+                skillElement = StoneSkill;
+                break;
+            case 4:
+                skillElement = LightSkill;
+                break;
+            case 5:
+                skillElement = WaterSkill;
+                break;
+            default:
+                break;
+        }
+    }
+
+    void Skill()
+    {
+        if(skillFlag && !isAttack && myElement>-1 && !isSkill){
+            isSkill=true;
+            StartCoroutine(CreateSkill());
+        }
+    }
+
+    IEnumerator CreateSkill()
+    {
+        instantSkill = Instantiate(skillElement, skillPos.position, skillPos.rotation);
+        Rigidbody skillRigid = instantSkill.GetComponent<Rigidbody>();
+        Vector3 skillVec;
+        if(Altflag) skillVec = slimeForward;    //슬라임 앞방향으로 발사, 무조건 슬라임 바로 앞의 적만 공격 가능
+        else skillVec = new Vector3(cameraArm.forward.x,cameraArm.forward.y,cameraArm.forward.z);   //카메라가 보는 방향으로 발사
+        skillRigid.velocity = skillVec * 80;
+        skillRigid.AddTorque(Vector3.up * 10, ForceMode.Impulse);
+        yield return new WaitForSeconds(0.7f);
+        isSkill=false;
+    }
+
+    
     
     void OnCollisionEnter(Collision collision)
     {
