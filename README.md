@@ -1,5 +1,8 @@
 # SlimeGameProject
 
+## 시연연상
+https://youtu.be/yyWO-t6BYZ4
+
 ## Function
 
 - GetInput() : 키보드, 마우스 등 입력을 받는 함수
