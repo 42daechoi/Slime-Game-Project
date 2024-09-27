@@ -3,6 +3,9 @@
 ## 시연연상
 https://youtu.be/yyWO-t6BYZ4
 
+## Blender Character Shaping 
+![slime2](https://github.com/user-attachments/assets/599ad9fb-c146-4982-bdf6-b325c12f9b8e)
+
 ## Function
 
 - GetInput() : 키보드, 마우스 등 입력을 받는 함수
