@@ -1,10 +1,13 @@
 # SlimeGameProject
 
+
 ## 시연연상
 https://youtu.be/yyWO-t6BYZ4
 
+
 ## Blender Character Shaping 
 ![slime2](https://github.com/user-attachments/assets/599ad9fb-c146-4982-bdf6-b325c12f9b8e)
+
 
 ## Function
 
@@ -20,6 +23,7 @@ https://youtu.be/yyWO-t6BYZ4
 - Interaction() : 원소를 획득하고 조건에 맞춰 공격력을 증가 시키는 함수
 - choiceElement() : 상호 작용한 원소 종류에 따라 원소 프리펩을 스킬에 할당 해주는 함수
 - Heal() : 체력을 회복 시키는 함수
+
 
 ## History
 ### 20.11.11
